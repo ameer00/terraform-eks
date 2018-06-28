@@ -4,10 +4,11 @@ See https://www.terraform.io/docs/providers/aws/guides/eks-getting-started.html 
 
 
 ## Download kubectl
+For Cloud Shell
 ```
 curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
 chmod +x kubectl
-sudo mv kubectl /usr/local/bin
+sudo mv kubectl /google/google-cloud-sdk/bin/.
 ```
 Confirm that `kubectl` is at least version 1.10 or higher.  Client version must be higher than the Server version.
 ```
