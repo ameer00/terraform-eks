@@ -1,4 +1,4 @@
-# Setting up AWS EKS (Hosted Kubernetes)
+# Setting up AWS EKS
 
 See https://www.terraform.io/docs/providers/aws/guides/eks-getting-started.html for full guide
 
@@ -9,6 +9,10 @@ curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s htt
 chmod +x kubectl
 sudo mv kubectl /usr/local/bin
 ```
+Confirm that `kubectl` is at least version 1.10 or higher.
+```
+kubectl version
+```
 
 ## Download the aws-iam-authenticator
 ```
@@ -16,6 +20,7 @@ wget https://github.com/kubernetes-sigs/aws-iam-authenticator/releases/download/
 chmod +x heptio-authenticator-aws_0.3.0_linux_amd64
 sudo mv heptio-authenticator-aws_0.3.0_linux_amd64 /usr/local/bin/heptio-authenticator-aws
 ```
+This is used to authenticate to the EKS cluster when running `kubectl` commands.
 
 ## Modify providers.tf
 
@@ -31,12 +36,13 @@ terraform apply
 
 ## Configure kubectl
 ```
-terraform output kubeconfig # save output in ~/.kube/config
+terraform output kubeconfig > kubeconfig.yaml
+kubectl config --kubeconfig kubeconfig.yaml
 ```
 
 ## Configure config-map-auth-aws
 ```
-terraform output config-map-aws-auth # save output in config-map-aws-auth.yaml
+terraform output config-map-aws-auth > config-map-aws-auth.yaml
 kubectl apply -f config-map-aws-auth.yaml
 ```
 
