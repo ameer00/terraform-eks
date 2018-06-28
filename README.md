@@ -9,9 +9,14 @@ curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s htt
 chmod +x kubectl
 sudo mv kubectl /usr/local/bin
 ```
-Confirm that `kubectl` is at least version 1.10 or higher.
+Confirm that `kubectl` is at least version 1.10 or higher.  Client version must be higher than the Server version.
 ```
 kubectl version
+```
+_Output_
+```
+Client Version: version.Info{Major:"1", Minor:"11", GitVersion:"v1.11.0", GitCommit:"91e7b4fd31fcd3d5f436da26c980becec37ceefe", GitTreeState:"clean", BuildDate:"2018-06-27T20:17:28Z", GoVersion:"go1.10.2", Compiler:"gc", Platform:"linux/amd64"}
+Server Version: version.Info{Major:"1", Minor:"10", GitVersion:"v1.10.3", GitCommit:"2bba0127d85d5a46ab4b778548be28623b32d0b0", GitTreeState:"clean", BuildDate:"2018-05-28T20:13:43Z", GoVersion:"go1.9.3", Compiler:"gc", Platform:"linux/amd64"}
 ```
 
 ## Download the aws-iam-authenticator
