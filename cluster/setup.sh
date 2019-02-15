@@ -99,6 +99,14 @@ else
 fi
 echo "********************************************************************************"
 
+# Install krompt
+if cat $HOME/.bashrc | grep K-PROMPT &> /dev/null ; then
+else
+    cd $HOME
+    cat $HOME/terraform-eks/cluster/krompt.txt >> $HOME/.bashrc
+    source $HOME/.bashrc
+fi
+
 # Install EKS Cluster
 echo "${bold}Start terraform script...${normal}"
 cd $HOME
