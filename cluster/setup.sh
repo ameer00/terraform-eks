@@ -16,8 +16,8 @@ read -p "EKS - Enter number of nodes [4]          : " TF_VAR_num_nodes
 read -p "EKS - Enter EC2 Instance Type [m4.xlarge]: " TF_VAR_inst_type
 read -p "EKS - Cluster Name [eks-1]               : " TF_VAR_cluster_name
 
-# export $AWS_ACCESS_KEY_ID
-# export $AWS_SECRET_ACCESS_KEY
+export AWS_ACCESS_KEY_ID
+export AWS_SECRET_ACCESS_KEY
 AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:-'us-east-1'}
 TF_VAR_num_nodes=${TF_VAR_num_nodes:-4}
 TF_VAR_inst_type=${TF_VAR_inst_type:-'m4.xlarge'}
