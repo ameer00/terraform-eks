@@ -154,6 +154,7 @@ until [ $node_status = "ReadyReadyReadyReady" ]; do
     sleep 10
 done
 echo "${bold}Nodes are Ready.${normal}"
+echo "********************************************************************************"
 
 # Install Istio
 echo "${bold}Installing Istio version $ISTIO_VERSION...${normal}"
