@@ -3,6 +3,10 @@
 #
 
 variable "cluster-name" {
-  default = "terraform-eks"
+  default = "eks-1"
   type    = "string"
+}
+
+variable "num_nodes" {
+    default = 4
 }
