@@ -1,0 +1,942 @@
+{
+    "version": 3,
+    "terraform_version": "0.11.7",
+    "serial": 2,
+    "lineage": "a41227cc-390b-352a-7f12-5ec12b9ea7d4",
+    "modules": [
+        {
+            "path": [
+                "root"
+            ],
+            "outputs": {
+                "config-map-aws-auth": {
+                    "sensitive": false,
+                    "type": "string",
+                    "value": "\n\napiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: aws-auth\n  namespace: kube-system\ndata:\n  mapRoles: |\n    - rolearn: arn:aws:iam::236938181688:role/terraform-eks-node\n      username: system:node:{{EC2PrivateDNSName}}\n      groups:\n        - system:bootstrappers\n        - system:nodes\n"
+                },
+                "kubeconfig": {
+                    "sensitive": false,
+                    "type": "string",
+                    "value": "\n\napiVersion: v1\nclusters:\n- cluster:\n    server: https://A993F29184321B04ACC4ADDCEFE1980E.yl4.us-east-1.eks.amazonaws.com\n    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN5RENDQWJDZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRFNU1ESXhOVEEwTXpBMU0xb1hEVEk1TURJeE1qQTBNekExTTFvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTmp6CnNiTUlNYnN3M0VNVzVEUDZOSnBxc0t1Y3RxYno2cUQzRFF0WTdVK2xrd0U0Tk0yUXNUdWw2YU16cmFqano2QjMKNi9UcW5uL3pvcE9VTHRBcVlvY1BsWXFaVWRTSEdTaERXVWdydkIzcjRBcXVWeTgrdWRpWTZoRDVpMGVlZyswdQpLQnpWbTRXb2g5S1BTUW0vN3Z1UEJhVkM5cHhFaHFVL0FGVVBHV1hFZnc3VFh3VU9MckRaakRocTFaZlBZd2tWClZwK0FVOVFGYWFWTFpvclBiUXVReGJvQjhoK09hVUQ3c3UrM3BqZ2E2OXN1K2R6U2w1TmFwa0RFNWxxOE5qR0IKbE1ZSjJVQTdxY0lWc3JZUGpFWlM5Z2Z0Nk1URGpWZG1LTXF6YzhWV0tXeEhsSURjc0xIYWhxSW1YR0M1aXpEaAp4c0dRNFFwcGxvc3pLOTEva2k4Q0F3RUFBYU1qTUNFd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFEUC91eHFZRDRtR2lFUlBacFh2Z1lpYlRFUysKbjU5bThTVUxBOHkzN3hOVGYwbVNwVlUwM2xqdkoxTWY4djZ0bXkrSmhYaHFPN2tpcko1SUlxbTFaVVF1NXdNaQpUV3g0cktGRCtnYmN2RlBQK1pHbXJ3SVJzS1h5d1lOMGJtNzN6OC92cUhqVkIvQ0FWQUhvamphc1Eyb3F3R1VyClNDbUtnQkRBZzQvSkNic1Q4dHF4NndNdUJJbEdTYTRQREs2KzQybFhFK1NkeVpmR0l1V1VKU1ZyQzlRYm1vd3oKbU5rK1p3R2IvK1grSWdBaUU5Y2ZNM0s1cU9ReGIxR2RWbkNzaWJBWFlndVV6ZVVyVVpzUzJkd0xjclFNelE0VgprVnJramJHNEU2aHJSSlN4QUxUdFFaemdDZGhHazEwR0pVQ21HalQyVWl5em5adXB4OUNhRDBRTU9mOD0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=\n  name: kubernetes\ncontexts:\n- context:\n    cluster: kubernetes\n    user: aws\n  name: aws\ncurrent-context: aws\nkind: Config\npreferences: {}\nusers:\n- name: aws\n  user:\n    exec:\n      apiVersion: client.authentication.k8s.io/v1alpha1\n      command: heptio-authenticator-aws\n      args:\n        - \"token\"\n        - \"-i\"\n        - \"eks-1\"\n"
+                }
+            },
+            "resources": {
+                "aws_autoscaling_group.node": {
+                    "type": "aws_autoscaling_group",
+                    "depends_on": [
+                        "aws_launch_configuration.node",
+                        "aws_subnet.eks.*"
+                    ],
+                    "primary": {
+                        "id": "terraform-eks",
+                        "attributes": {
+                            "arn": "arn:aws:autoscaling:us-east-1:236938181688:autoScalingGroup:bc963a33-77fe-4c42-994e-f0e88c22a7f7:autoScalingGroupName/terraform-eks",
+                            "availability_zones.#": "2",
+                            "availability_zones.1305112097": "us-east-1b",
+                            "availability_zones.3569565595": "us-east-1a",
+                            "default_cooldown": "300",
+                            "desired_capacity": "4",
+                            "enabled_metrics.#": "0",
+                            "force_delete": "false",
+                            "health_check_grace_period": "300",
+                            "health_check_type": "EC2",
+                            "id": "terraform-eks",
+                            "launch_configuration": "terraform-eks20190215043320628400000006",
+                            "launch_template.#": "0",
+                            "load_balancers.#": "0",
+                            "max_size": "4",
+                            "metrics_granularity": "1Minute",
+                            "min_size": "1",
+                            "mixed_instances_policy.#": "0",
+                            "name": "terraform-eks",
+                            "placement_group": "",
+                            "protect_from_scale_in": "false",
+                            "service_linked_role_arn": "arn:aws:iam::236938181688:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling",
+                            "suspended_processes.#": "0",
+                            "tag.#": "2",
+                            "tag.2120348849.key": "kubernetes.io/cluster/eks-1",
+                            "tag.2120348849.propagate_at_launch": "true",
+                            "tag.2120348849.value": "owned",
+                            "tag.2199080803.key": "Name",
+                            "tag.2199080803.propagate_at_launch": "true",
+                            "tag.2199080803.value": "terraform-eks",
+                            "target_group_arns.#": "0",
+                            "termination_policies.#": "0",
+                            "vpc_zone_identifier.#": "4",
+                            "vpc_zone_identifier.1824052635": "subnet-04f786b55805ea9b7",
+                            "vpc_zone_identifier.3058438059": "subnet-07a49984585942d21",
+                            "vpc_zone_identifier.3237086661": "subnet-05dcb152f9f63b5f1",
+                            "vpc_zone_identifier.537583657": "subnet-064c02efc77c10907",
+                            "wait_for_capacity_timeout": "10m"
+                        },
+                        "meta": {
+                            "e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+                                "delete": 600000000000
+                            }
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_eks_cluster.eks": {
+                    "type": "aws_eks_cluster",
+                    "depends_on": [
+                        "aws_iam_role.eks-cluster",
+                        "aws_iam_role_policy_attachment.cluster-AmazonEKSClusterPolicy",
+                        "aws_iam_role_policy_attachment.cluster-AmazonEKSServicePolicy",
+                        "aws_security_group.eks-cluster",
+                        "aws_subnet.eks.*"
+                    ],
+                    "primary": {
+                        "id": "eks-1",
+                        "attributes": {
+                            "arn": "arn:aws:eks:us-east-1:236938181688:cluster/eks-1",
+                            "certificate_authority.#": "1",
+                            "certificate_authority.0.data": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN5RENDQWJDZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRFNU1ESXhOVEEwTXpBMU0xb1hEVEk1TURJeE1qQTBNekExTTFvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTmp6CnNiTUlNYnN3M0VNVzVEUDZOSnBxc0t1Y3RxYno2cUQzRFF0WTdVK2xrd0U0Tk0yUXNUdWw2YU16cmFqano2QjMKNi9UcW5uL3pvcE9VTHRBcVlvY1BsWXFaVWRTSEdTaERXVWdydkIzcjRBcXVWeTgrdWRpWTZoRDVpMGVlZyswdQpLQnpWbTRXb2g5S1BTUW0vN3Z1UEJhVkM5cHhFaHFVL0FGVVBHV1hFZnc3VFh3VU9MckRaakRocTFaZlBZd2tWClZwK0FVOVFGYWFWTFpvclBiUXVReGJvQjhoK09hVUQ3c3UrM3BqZ2E2OXN1K2R6U2w1TmFwa0RFNWxxOE5qR0IKbE1ZSjJVQTdxY0lWc3JZUGpFWlM5Z2Z0Nk1URGpWZG1LTXF6YzhWV0tXeEhsSURjc0xIYWhxSW1YR0M1aXpEaAp4c0dRNFFwcGxvc3pLOTEva2k4Q0F3RUFBYU1qTUNFd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFEUC91eHFZRDRtR2lFUlBacFh2Z1lpYlRFUysKbjU5bThTVUxBOHkzN3hOVGYwbVNwVlUwM2xqdkoxTWY4djZ0bXkrSmhYaHFPN2tpcko1SUlxbTFaVVF1NXdNaQpUV3g0cktGRCtnYmN2RlBQK1pHbXJ3SVJzS1h5d1lOMGJtNzN6OC92cUhqVkIvQ0FWQUhvamphc1Eyb3F3R1VyClNDbUtnQkRBZzQvSkNic1Q4dHF4NndNdUJJbEdTYTRQREs2KzQybFhFK1NkeVpmR0l1V1VKU1ZyQzlRYm1vd3oKbU5rK1p3R2IvK1grSWdBaUU5Y2ZNM0s1cU9ReGIxR2RWbkNzaWJBWFlndVV6ZVVyVVpzUzJkd0xjclFNelE0VgprVnJramJHNEU2aHJSSlN4QUxUdFFaemdDZGhHazEwR0pVQ21HalQyVWl5em5adXB4OUNhRDBRTU9mOD0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=",
+                            "created_at": "2019-02-15 04:21:38 +0000 UTC",
+                            "endpoint": "https://A993F29184321B04ACC4ADDCEFE1980E.yl4.us-east-1.eks.amazonaws.com",
+                            "id": "eks-1",
+                            "name": "eks-1",
+                            "platform_version": "eks.1",
+                            "role_arn": "arn:aws:iam::236938181688:role/terraform-eks-cluster",
+                            "version": "1.11",
+                            "vpc_config.#": "1",
+                            "vpc_config.0.security_group_ids.#": "1",
+                            "vpc_config.0.security_group_ids.1594204299": "sg-07f1e67a2716ea71e",
+                            "vpc_config.0.subnet_ids.#": "4",
+                            "vpc_config.0.subnet_ids.2294792851": "subnet-05dcb152f9f63b5f1",
+                            "vpc_config.0.subnet_ids.563844133": "subnet-064c02efc77c10907",
+                            "vpc_config.0.subnet_ids.582693062": "subnet-07a49984585942d21",
+                            "vpc_config.0.subnet_ids.79230128": "subnet-04f786b55805ea9b7",
+                            "vpc_config.0.vpc_id": "vpc-0fcd6a8fdaf399822"
+                        },
+                        "meta": {
+                            "e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+                                "create": 900000000000,
+                                "delete": 900000000000,
+                                "update": 3600000000000
+                            }
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_iam_instance_profile.node": {
+                    "type": "aws_iam_instance_profile",
+                    "depends_on": [
+                        "aws_iam_role.node"
+                    ],
+                    "primary": {
+                        "id": "terraform-eks",
+                        "attributes": {
+                            "arn": "arn:aws:iam::236938181688:instance-profile/terraform-eks",
+                            "create_date": "2019-02-15T04:21:27Z",
+                            "id": "terraform-eks",
+                            "name": "terraform-eks",
+                            "path": "/",
+                            "role": "terraform-eks-node",
+                            "roles.#": "0",
+                            "unique_id": "AIPAJJQLMRQZFSXZ45MTA"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_iam_role.eks-cluster": {
+                    "type": "aws_iam_role",
+                    "depends_on": [],
+                    "primary": {
+                        "id": "terraform-eks-cluster",
+                        "attributes": {
+                            "arn": "arn:aws:iam::236938181688:role/terraform-eks-cluster",
+                            "assume_role_policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"eks.amazonaws.com\"},\"Action\":\"sts:AssumeRole\"}]}",
+                            "create_date": "2019-02-15T04:21:27Z",
+                            "description": "",
+                            "force_detach_policies": "false",
+                            "id": "terraform-eks-cluster",
+                            "max_session_duration": "3600",
+                            "name": "terraform-eks-cluster",
+                            "path": "/",
+                            "tags.%": "0",
+                            "unique_id": "AROAIDXZBN3UVP653IMMM"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_iam_role.node": {
+                    "type": "aws_iam_role",
+                    "depends_on": [],
+                    "primary": {
+                        "id": "terraform-eks-node",
+                        "attributes": {
+                            "arn": "arn:aws:iam::236938181688:role/terraform-eks-node",
+                            "assume_role_policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"ec2.amazonaws.com\"},\"Action\":\"sts:AssumeRole\"}]}",
+                            "create_date": "2019-02-15T04:21:27Z",
+                            "description": "",
+                            "force_detach_policies": "false",
+                            "id": "terraform-eks-node",
+                            "max_session_duration": "3600",
+                            "name": "terraform-eks-node",
+                            "path": "/",
+                            "tags.%": "0",
+                            "unique_id": "AROAJRMGICHYXLMTTZITS"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_iam_role_policy_attachment.cluster-AmazonEKSClusterPolicy": {
+                    "type": "aws_iam_role_policy_attachment",
+                    "depends_on": [
+                        "aws_iam_role.eks-cluster"
+                    ],
+                    "primary": {
+                        "id": "terraform-eks-cluster-20190215042127796600000002",
+                        "attributes": {
+                            "id": "terraform-eks-cluster-20190215042127796600000002",
+                            "policy_arn": "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy",
+                            "role": "terraform-eks-cluster"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_iam_role_policy_attachment.cluster-AmazonEKSServicePolicy": {
+                    "type": "aws_iam_role_policy_attachment",
+                    "depends_on": [
+                        "aws_iam_role.eks-cluster"
+                    ],
+                    "primary": {
+                        "id": "terraform-eks-cluster-20190215042127817400000004",
+                        "attributes": {
+                            "id": "terraform-eks-cluster-20190215042127817400000004",
+                            "policy_arn": "arn:aws:iam::aws:policy/AmazonEKSServicePolicy",
+                            "role": "terraform-eks-cluster"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_iam_role_policy_attachment.node-AmazonEC2ContainerRegistryReadOnly": {
+                    "type": "aws_iam_role_policy_attachment",
+                    "depends_on": [
+                        "aws_iam_role.node"
+                    ],
+                    "primary": {
+                        "id": "terraform-eks-node-20190215042127819800000005",
+                        "attributes": {
+                            "id": "terraform-eks-node-20190215042127819800000005",
+                            "policy_arn": "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
+                            "role": "terraform-eks-node"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_iam_role_policy_attachment.node-AmazonEKSWorkerNodePolicy": {
+                    "type": "aws_iam_role_policy_attachment",
+                    "depends_on": [
+                        "aws_iam_role.node"
+                    ],
+                    "primary": {
+                        "id": "terraform-eks-node-20190215042127816100000003",
+                        "attributes": {
+                            "id": "terraform-eks-node-20190215042127816100000003",
+                            "policy_arn": "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
+                            "role": "terraform-eks-node"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_iam_role_policy_attachment.node-AmazonEKS_CNI_Policy": {
+                    "type": "aws_iam_role_policy_attachment",
+                    "depends_on": [
+                        "aws_iam_role.node"
+                    ],
+                    "primary": {
+                        "id": "terraform-eks-node-20190215042127780700000001",
+                        "attributes": {
+                            "id": "terraform-eks-node-20190215042127780700000001",
+                            "policy_arn": "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
+                            "role": "terraform-eks-node"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_internet_gateway.eks": {
+                    "type": "aws_internet_gateway",
+                    "depends_on": [
+                        "aws_vpc.eks"
+                    ],
+                    "primary": {
+                        "id": "igw-01a5e947668297296",
+                        "attributes": {
+                            "id": "igw-01a5e947668297296",
+                            "owner_id": "236938181688",
+                            "tags.%": "1",
+                            "tags.Name": "terraform-eks",
+                            "vpc_id": "vpc-0fcd6a8fdaf399822"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_launch_configuration.node": {
+                    "type": "aws_launch_configuration",
+                    "depends_on": [
+                        "aws_iam_instance_profile.node",
+                        "aws_security_group.node",
+                        "data.aws_ami.eks-worker",
+                        "local.node-userdata"
+                    ],
+                    "primary": {
+                        "id": "terraform-eks20190215043320628400000006",
+                        "attributes": {
+                            "associate_public_ip_address": "true",
+                            "ebs_block_device.#": "0",
+                            "ebs_optimized": "false",
+                            "enable_monitoring": "true",
+                            "ephemeral_block_device.#": "0",
+                            "iam_instance_profile": "terraform-eks",
+                            "id": "terraform-eks20190215043320628400000006",
+                            "image_id": "ami-048486555686d18a0",
+                            "instance_type": "m4.xlarge",
+                            "key_name": "",
+                            "name": "terraform-eks20190215043320628400000006",
+                            "name_prefix": "terraform-eks",
+                            "root_block_device.#": "0",
+                            "security_groups.#": "1",
+                            "security_groups.2356719686": "sg-04c233054d32a60a2",
+                            "spot_price": "",
+                            "user_data_base64": "IyEvYmluL2Jhc2ggLXhlCgpDQV9DRVJUSUZJQ0FURV9ESVJFQ1RPUlk9L2V0Yy9rdWJlcm5ldGVzL3BraQpDQV9DRVJUSUZJQ0FURV9GSUxFX1BBVEg9JENBX0NFUlRJRklDQVRFX0RJUkVDVE9SWS9jYS5jcnQKbWtkaXIgLXAgJENBX0NFUlRJRklDQVRFX0RJUkVDVE9SWQplY2hvICJMUzB0TFMxQ1JVZEpUaUJEUlZKVVNVWkpRMEZVUlMwdExTMHRDazFKU1VONVJFTkRRV0pEWjBGM1NVSkJaMGxDUVVSQlRrSm5hM0ZvYTJsSE9YY3dRa0ZSYzBaQlJFRldUVkpOZDBWUldVUldVVkZFUlhkd2NtUlhTbXdLWTIwMWJHUkhWbnBOUWpSWVJGUkZOVTFFU1hoT1ZFRXdUWHBCTVUweGIxaEVWRWsxVFVSSmVFMXFRVEJOZWtFeFRURnZkMFpVUlZSTlFrVkhRVEZWUlFwQmVFMUxZVE5XYVZwWVNuVmFXRkpzWTNwRFEwRlRTWGRFVVZsS1MyOWFTV2gyWTA1QlVVVkNRbEZCUkdkblJWQkJSRU5EUVZGdlEyZG5SVUpCVG1wNkNuTmlUVWxOWW5OM00wVk5WelZFVURaT1NuQnhjMHQxWTNSeFlubzJjVVF6UkZGMFdUZFZLMnhyZDBVMFRrMHlVWE5VZFd3MllVMTZjbUZxYW5vMlFqTUtOaTlVY1c1dUwzcHZjRTlWVEhSQmNWbHZZMUJzV1hGYVZXUlRTRWRUYUVSWFZXZHlka0l6Y2pSQmNYVldlVGdyZFdScFdUWm9SRFZwTUdWbFp5c3dkUXBMUW5wV2JUUlhiMmc1UzFCVFVXMHZOM1oxVUVKaFZrTTVjSGhGYUhGVkwwRkdWVkJIVjFoRlpuYzNWRmgzVlU5TWNrUmFha1JvY1RGYVpsQlpkMnRXQ2xad0swRlZPVkZHWVdGV1RGcHZjbEJpVVhWUmVHSnZRamhvSzA5aFZVUTNjM1VyTTNCcVoyRTJPWE4xSzJSNlUydzFUbUZ3YTBSRk5XeHhPRTVxUjBJS2JFMVpTakpWUVRkeFkwbFdjM0paVUdwRldsTTVaMlowTmsxVVJHcFdaRzFMVFhGNll6aFdWMHRYZUVoc1NVUmpjMHhJWVdoeFNXMVlSME0xYVhwRWFBcDRjMGRSTkZGd2NHeHZjM3BMT1RFdmEyazRRMEYzUlVGQllVMXFUVU5GZDBSbldVUldVakJRUVZGSUwwSkJVVVJCWjB0clRVRTRSMEV4VldSRmQwVkNDaTkzVVVaTlFVMUNRV1k0ZDBSUldVcExiMXBKYUhaalRrRlJSVXhDVVVGRVoyZEZRa0ZFVUM5MWVIRlpSRFJ0UjJsRlVsQmFjRmgyWjFscFlsUkZVeXNLYmpVNWJUaFRWVXhCT0hrek4zaE9WR1l3YlZOd1ZsVXdNMnhxZGtveFRXWTRkalowYlhrclNtaFlhSEZQTjJ0cGNrbzFTVWx4YlRGYVZWRjFOWGROYVFwVVYzZzBja3RHUkN0blltTjJSbEJRSzFwSGJYSjNTVkp6UzFoNWQxbE9NR0p0TnpONk9DOTJjVWhxVmtJdlEwRldRVWh2YW1waGMxRXliM0YzUjFWeUNsTkRiVXRuUWtSQlp6UXZTa05pYzFRNGRIRjRObmROZFVKSmJFZFRZVFJRUkVzMkt6UXliRmhGSzFOa2VWcG1SMGwxVjFWS1UxWnlRemxSWW0xdmQzb0tiVTVySzFwM1IySXZLMWdyU1dkQmFVVTVZMlpOTTBzMWNVOVJlR0l4UjJSV2JrTnphV0pCV0ZsbmRWVjZaVlZ5VlZwelV6SmtkMHhqY2xGTmVsRTBWZ3ByVm5KcmFtSkhORVUyYUhKU1NsTjRRVXhVZEZGYWVtZERaR2hIYXpFd1IwcFZRMjFIYWxReVZXbDVlbTVhZFhCNE9VTmhSREJSVFU5bU9EMEtMUzB0TFMxRlRrUWdRMFZTVkVsR1NVTkJWRVV0TFMwdExRbz0iIHwgYmFzZTY0IC1kID4gICRDQV9DRVJUSUZJQ0FURV9GSUxFX1BBVEgKSU5URVJOQUxfSVA9JChjdXJsIC1zIGh0dHA6Ly8xNjkuMjU0LjE2OS4yNTQvbGF0ZXN0L21ldGEtZGF0YS9sb2NhbC1pcHY0KQpzZWQgLWkgcyxNQVNURVJfRU5EUE9JTlQsaHR0cHM6Ly9BOTkzRjI5MTg0MzIxQjA0QUNDNEFERENFRkUxOTgwRS55bDQudXMtZWFzdC0xLmVrcy5hbWF6b25hd3MuY29tLGcgL3Zhci9saWIva3ViZWxldC9rdWJlY29uZmlnCnNlZCAtaSBzLENMVVNURVJfTkFNRSxla3MtMSxnIC92YXIvbGliL2t1YmVsZXQva3ViZWNvbmZpZwpzZWQgLWkgcyxSRUdJT04sdXMtZWFzdC0xLGcgL2V0Yy9zeXN0ZW1kL3N5c3RlbS9rdWJlbGV0LnNlcnZpY2UKc2VkIC1pIHMsTUFYX1BPRFMsMjAsZyAvZXRjL3N5c3RlbWQvc3lzdGVtL2t1YmVsZXQuc2VydmljZQpzZWQgLWkgcyxNQVNURVJfRU5EUE9JTlQsaHR0cHM6Ly9BOTkzRjI5MTg0MzIxQjA0QUNDNEFERENFRkUxOTgwRS55bDQudXMtZWFzdC0xLmVrcy5hbWF6b25hd3MuY29tLGcgL2V0Yy9zeXN0ZW1kL3N5c3RlbS9rdWJlbGV0LnNlcnZpY2UKc2VkIC1pIHMsSU5URVJOQUxfSVAsJElOVEVSTkFMX0lQLGcgL2V0Yy9zeXN0ZW1kL3N5c3RlbS9rdWJlbGV0LnNlcnZpY2UKRE5TX0NMVVNURVJfSVA9MTAuMTAwLjAuMTAKaWYgW1sgJElOVEVSTkFMX0lQID09IDEwLiogXV0gOyB0aGVuIEROU19DTFVTVEVSX0lQPTE3Mi4yMC4wLjEwOyBmaQpzZWQgLWkgcyxETlNfQ0xVU1RFUl9JUCwkRE5TX0NMVVNURVJfSVAsZyAvZXRjL3N5c3RlbWQvc3lzdGVtL2t1YmVsZXQuc2VydmljZQpzZWQgLWkgcyxDRVJUSUZJQ0FURV9BVVRIT1JJVFlfRklMRSwkQ0FfQ0VSVElGSUNBVEVfRklMRV9QQVRILGcgL3Zhci9saWIva3ViZWxldC9rdWJlY29uZmlnCnNlZCAtaSBzLENMSUVOVF9DQV9GSUxFLCRDQV9DRVJUSUZJQ0FURV9GSUxFX1BBVEgsZyAgL2V0Yy9zeXN0ZW1kL3N5c3RlbS9rdWJlbGV0LnNlcnZpY2UKc3lzdGVtY3RsIGRhZW1vbi1yZWxvYWQKc3lzdGVtY3RsIHJlc3RhcnQga3ViZWxldAo=",
+                            "vpc_classic_link_id": "",
+                            "vpc_classic_link_security_groups.#": "0"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_route_table.eks": {
+                    "type": "aws_route_table",
+                    "depends_on": [
+                        "aws_internet_gateway.eks",
+                        "aws_vpc.eks"
+                    ],
+                    "primary": {
+                        "id": "rtb-0b97b40915fb5fe68",
+                        "attributes": {
+                            "id": "rtb-0b97b40915fb5fe68",
+                            "owner_id": "236938181688",
+                            "propagating_vgws.#": "0",
+                            "route.#": "1",
+                            "route.2842072522.cidr_block": "0.0.0.0/0",
+                            "route.2842072522.egress_only_gateway_id": "",
+                            "route.2842072522.gateway_id": "igw-01a5e947668297296",
+                            "route.2842072522.instance_id": "",
+                            "route.2842072522.ipv6_cidr_block": "",
+                            "route.2842072522.nat_gateway_id": "",
+                            "route.2842072522.network_interface_id": "",
+                            "route.2842072522.transit_gateway_id": "",
+                            "route.2842072522.vpc_peering_connection_id": "",
+                            "tags.%": "0",
+                            "vpc_id": "vpc-0fcd6a8fdaf399822"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_route_table_association.eks.0": {
+                    "type": "aws_route_table_association",
+                    "depends_on": [
+                        "aws_route_table.eks",
+                        "aws_subnet.eks.*"
+                    ],
+                    "primary": {
+                        "id": "rtbassoc-0b8ea9646a7ea6a16",
+                        "attributes": {
+                            "id": "rtbassoc-0b8ea9646a7ea6a16",
+                            "route_table_id": "rtb-0b97b40915fb5fe68",
+                            "subnet_id": "subnet-07a49984585942d21"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_route_table_association.eks.1": {
+                    "type": "aws_route_table_association",
+                    "depends_on": [
+                        "aws_route_table.eks",
+                        "aws_subnet.eks.*"
+                    ],
+                    "primary": {
+                        "id": "rtbassoc-0f0e7e9e2421379ab",
+                        "attributes": {
+                            "id": "rtbassoc-0f0e7e9e2421379ab",
+                            "route_table_id": "rtb-0b97b40915fb5fe68",
+                            "subnet_id": "subnet-05dcb152f9f63b5f1"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_route_table_association.eks.2": {
+                    "type": "aws_route_table_association",
+                    "depends_on": [
+                        "aws_route_table.eks",
+                        "aws_subnet.eks.*"
+                    ],
+                    "primary": {
+                        "id": "rtbassoc-050b50842c5eae866",
+                        "attributes": {
+                            "id": "rtbassoc-050b50842c5eae866",
+                            "route_table_id": "rtb-0b97b40915fb5fe68",
+                            "subnet_id": "subnet-064c02efc77c10907"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_route_table_association.eks.3": {
+                    "type": "aws_route_table_association",
+                    "depends_on": [
+                        "aws_route_table.eks",
+                        "aws_subnet.eks.*"
+                    ],
+                    "primary": {
+                        "id": "rtbassoc-027ff90dd760518e5",
+                        "attributes": {
+                            "id": "rtbassoc-027ff90dd760518e5",
+                            "route_table_id": "rtb-0b97b40915fb5fe68",
+                            "subnet_id": "subnet-04f786b55805ea9b7"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_security_group.eks-cluster": {
+                    "type": "aws_security_group",
+                    "depends_on": [
+                        "aws_vpc.eks"
+                    ],
+                    "primary": {
+                        "id": "sg-07f1e67a2716ea71e",
+                        "attributes": {
+                            "arn": "arn:aws:ec2:us-east-1:236938181688:security-group/sg-07f1e67a2716ea71e",
+                            "description": "Cluster communication with worker nodes",
+                            "egress.#": "1",
+                            "egress.482069346.cidr_blocks.#": "1",
+                            "egress.482069346.cidr_blocks.0": "0.0.0.0/0",
+                            "egress.482069346.description": "",
+                            "egress.482069346.from_port": "0",
+                            "egress.482069346.ipv6_cidr_blocks.#": "0",
+                            "egress.482069346.prefix_list_ids.#": "0",
+                            "egress.482069346.protocol": "-1",
+                            "egress.482069346.security_groups.#": "0",
+                            "egress.482069346.self": "false",
+                            "egress.482069346.to_port": "0",
+                            "id": "sg-07f1e67a2716ea71e",
+                            "ingress.#": "0",
+                            "name": "terraform-eks-cluster",
+                            "owner_id": "236938181688",
+                            "revoke_rules_on_delete": "false",
+                            "tags.%": "1",
+                            "tags.Name": "terraform-eks",
+                            "vpc_id": "vpc-0fcd6a8fdaf399822"
+                        },
+                        "meta": {
+                            "e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+                                "create": 600000000000,
+                                "delete": 600000000000
+                            },
+                            "schema_version": "1"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_security_group.node": {
+                    "type": "aws_security_group",
+                    "depends_on": [
+                        "aws_vpc.eks"
+                    ],
+                    "primary": {
+                        "id": "sg-04c233054d32a60a2",
+                        "attributes": {
+                            "arn": "arn:aws:ec2:us-east-1:236938181688:security-group/sg-04c233054d32a60a2",
+                            "description": "Security group for all nodes in the cluster",
+                            "egress.#": "1",
+                            "egress.482069346.cidr_blocks.#": "1",
+                            "egress.482069346.cidr_blocks.0": "0.0.0.0/0",
+                            "egress.482069346.description": "",
+                            "egress.482069346.from_port": "0",
+                            "egress.482069346.ipv6_cidr_blocks.#": "0",
+                            "egress.482069346.prefix_list_ids.#": "0",
+                            "egress.482069346.protocol": "-1",
+                            "egress.482069346.security_groups.#": "0",
+                            "egress.482069346.self": "false",
+                            "egress.482069346.to_port": "0",
+                            "id": "sg-04c233054d32a60a2",
+                            "ingress.#": "0",
+                            "name": "terraform-eks-node",
+                            "owner_id": "236938181688",
+                            "revoke_rules_on_delete": "false",
+                            "tags.%": "2",
+                            "tags.Name": "terraform-eks-node",
+                            "tags.kubernetes.io/cluster/eks-1": "owned",
+                            "vpc_id": "vpc-0fcd6a8fdaf399822"
+                        },
+                        "meta": {
+                            "e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+                                "create": 600000000000,
+                                "delete": 600000000000
+                            },
+                            "schema_version": "1"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_security_group_rule.cluster-ingress-node-https": {
+                    "type": "aws_security_group_rule",
+                    "depends_on": [
+                        "aws_security_group.eks-cluster",
+                        "aws_security_group.node"
+                    ],
+                    "primary": {
+                        "id": "sgrule-1368968688",
+                        "attributes": {
+                            "description": "Allow pods to communicate with the cluster API Server",
+                            "from_port": "443",
+                            "id": "sgrule-1368968688",
+                            "protocol": "tcp",
+                            "security_group_id": "sg-07f1e67a2716ea71e",
+                            "self": "false",
+                            "source_security_group_id": "sg-04c233054d32a60a2",
+                            "to_port": "443",
+                            "type": "ingress"
+                        },
+                        "meta": {
+                            "schema_version": "2"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_security_group_rule.cluster-ingress-workstation-https": {
+                    "type": "aws_security_group_rule",
+                    "depends_on": [
+                        "aws_security_group.eks-cluster",
+                        "local.workstation-external-cidr"
+                    ],
+                    "primary": {
+                        "id": "sgrule-2058862935",
+                        "attributes": {
+                            "cidr_blocks.#": "1",
+                            "cidr_blocks.0": "35.232.153.62/32",
+                            "description": "Allow workstation to communicate with the cluster API Server",
+                            "from_port": "443",
+                            "id": "sgrule-2058862935",
+                            "protocol": "tcp",
+                            "security_group_id": "sg-07f1e67a2716ea71e",
+                            "self": "false",
+                            "to_port": "443",
+                            "type": "ingress"
+                        },
+                        "meta": {
+                            "schema_version": "2"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_security_group_rule.node-ingress-cluster": {
+                    "type": "aws_security_group_rule",
+                    "depends_on": [
+                        "aws_security_group.eks-cluster",
+                        "aws_security_group.node"
+                    ],
+                    "primary": {
+                        "id": "sgrule-1051627896",
+                        "attributes": {
+                            "description": "Allow worker Kubelets and pods to receive communication from the cluster control plane",
+                            "from_port": "1025",
+                            "id": "sgrule-1051627896",
+                            "protocol": "tcp",
+                            "security_group_id": "sg-04c233054d32a60a2",
+                            "self": "false",
+                            "source_security_group_id": "sg-07f1e67a2716ea71e",
+                            "to_port": "65535",
+                            "type": "ingress"
+                        },
+                        "meta": {
+                            "schema_version": "2"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_security_group_rule.node-ingress-self": {
+                    "type": "aws_security_group_rule",
+                    "depends_on": [
+                        "aws_security_group.node"
+                    ],
+                    "primary": {
+                        "id": "sgrule-2568170894",
+                        "attributes": {
+                            "description": "Allow node to communicate with each other",
+                            "from_port": "0",
+                            "id": "sgrule-2568170894",
+                            "protocol": "-1",
+                            "security_group_id": "sg-04c233054d32a60a2",
+                            "self": "false",
+                            "source_security_group_id": "sg-04c233054d32a60a2",
+                            "to_port": "65535",
+                            "type": "ingress"
+                        },
+                        "meta": {
+                            "schema_version": "2"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_subnet.eks.0": {
+                    "type": "aws_subnet",
+                    "depends_on": [
+                        "aws_vpc.eks",
+                        "data.aws_availability_zones.available"
+                    ],
+                    "primary": {
+                        "id": "subnet-07a49984585942d21",
+                        "attributes": {
+                            "arn": "arn:aws:ec2:us-east-1:236938181688:subnet/subnet-07a49984585942d21",
+                            "assign_ipv6_address_on_creation": "false",
+                            "availability_zone": "us-east-1a",
+                            "availability_zone_id": "use1-az4",
+                            "cidr_block": "10.0.0.0/24",
+                            "id": "subnet-07a49984585942d21",
+                            "ipv6_cidr_block": "",
+                            "ipv6_cidr_block_association_id": "",
+                            "map_public_ip_on_launch": "false",
+                            "owner_id": "236938181688",
+                            "tags.%": "2",
+                            "tags.Name": "terraform-eks-node",
+                            "tags.kubernetes.io/cluster/eks-1": "shared",
+                            "vpc_id": "vpc-0fcd6a8fdaf399822"
+                        },
+                        "meta": {
+                            "e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+                                "create": 600000000000,
+                                "delete": 600000000000
+                            },
+                            "schema_version": "1"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_subnet.eks.1": {
+                    "type": "aws_subnet",
+                    "depends_on": [
+                        "aws_vpc.eks",
+                        "data.aws_availability_zones.available"
+                    ],
+                    "primary": {
+                        "id": "subnet-05dcb152f9f63b5f1",
+                        "attributes": {
+                            "arn": "arn:aws:ec2:us-east-1:236938181688:subnet/subnet-05dcb152f9f63b5f1",
+                            "assign_ipv6_address_on_creation": "false",
+                            "availability_zone": "us-east-1b",
+                            "availability_zone_id": "use1-az6",
+                            "cidr_block": "10.0.1.0/24",
+                            "id": "subnet-05dcb152f9f63b5f1",
+                            "ipv6_cidr_block": "",
+                            "ipv6_cidr_block_association_id": "",
+                            "map_public_ip_on_launch": "false",
+                            "owner_id": "236938181688",
+                            "tags.%": "2",
+                            "tags.Name": "terraform-eks-node",
+                            "tags.kubernetes.io/cluster/eks-1": "shared",
+                            "vpc_id": "vpc-0fcd6a8fdaf399822"
+                        },
+                        "meta": {
+                            "e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+                                "create": 600000000000,
+                                "delete": 600000000000
+                            },
+                            "schema_version": "1"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_subnet.eks.2": {
+                    "type": "aws_subnet",
+                    "depends_on": [
+                        "aws_vpc.eks",
+                        "data.aws_availability_zones.available"
+                    ],
+                    "primary": {
+                        "id": "subnet-064c02efc77c10907",
+                        "attributes": {
+                            "arn": "arn:aws:ec2:us-east-1:236938181688:subnet/subnet-064c02efc77c10907",
+                            "assign_ipv6_address_on_creation": "false",
+                            "availability_zone": "us-east-1a",
+                            "availability_zone_id": "use1-az4",
+                            "cidr_block": "10.0.2.0/24",
+                            "id": "subnet-064c02efc77c10907",
+                            "ipv6_cidr_block": "",
+                            "ipv6_cidr_block_association_id": "",
+                            "map_public_ip_on_launch": "false",
+                            "owner_id": "236938181688",
+                            "tags.%": "2",
+                            "tags.Name": "terraform-eks-node",
+                            "tags.kubernetes.io/cluster/eks-1": "shared",
+                            "vpc_id": "vpc-0fcd6a8fdaf399822"
+                        },
+                        "meta": {
+                            "e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+                                "create": 600000000000,
+                                "delete": 600000000000
+                            },
+                            "schema_version": "1"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_subnet.eks.3": {
+                    "type": "aws_subnet",
+                    "depends_on": [
+                        "aws_vpc.eks",
+                        "data.aws_availability_zones.available"
+                    ],
+                    "primary": {
+                        "id": "subnet-04f786b55805ea9b7",
+                        "attributes": {
+                            "arn": "arn:aws:ec2:us-east-1:236938181688:subnet/subnet-04f786b55805ea9b7",
+                            "assign_ipv6_address_on_creation": "false",
+                            "availability_zone": "us-east-1b",
+                            "availability_zone_id": "use1-az6",
+                            "cidr_block": "10.0.3.0/24",
+                            "id": "subnet-04f786b55805ea9b7",
+                            "ipv6_cidr_block": "",
+                            "ipv6_cidr_block_association_id": "",
+                            "map_public_ip_on_launch": "false",
+                            "owner_id": "236938181688",
+                            "tags.%": "2",
+                            "tags.Name": "terraform-eks-node",
+                            "tags.kubernetes.io/cluster/eks-1": "shared",
+                            "vpc_id": "vpc-0fcd6a8fdaf399822"
+                        },
+                        "meta": {
+                            "e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+                                "create": 600000000000,
+                                "delete": 600000000000
+                            },
+                            "schema_version": "1"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_vpc.eks": {
+                    "type": "aws_vpc",
+                    "depends_on": [],
+                    "primary": {
+                        "id": "vpc-0fcd6a8fdaf399822",
+                        "attributes": {
+                            "arn": "arn:aws:ec2:us-east-1:236938181688:vpc/vpc-0fcd6a8fdaf399822",
+                            "assign_generated_ipv6_cidr_block": "false",
+                            "cidr_block": "10.0.0.0/16",
+                            "default_network_acl_id": "acl-0f7081b19fe9b774c",
+                            "default_route_table_id": "rtb-096d58c97cc63d1b1",
+                            "default_security_group_id": "sg-0009a6f96047d2d2d",
+                            "dhcp_options_id": "dopt-947f62ec",
+                            "enable_classiclink": "false",
+                            "enable_classiclink_dns_support": "false",
+                            "enable_dns_hostnames": "false",
+                            "enable_dns_support": "true",
+                            "id": "vpc-0fcd6a8fdaf399822",
+                            "instance_tenancy": "default",
+                            "ipv6_association_id": "",
+                            "ipv6_cidr_block": "",
+                            "main_route_table_id": "rtb-096d58c97cc63d1b1",
+                            "owner_id": "236938181688",
+                            "tags.%": "2",
+                            "tags.Name": "terraform-eks-node",
+                            "tags.kubernetes.io/cluster/eks-1": "shared"
+                        },
+                        "meta": {
+                            "schema_version": "1"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "data.aws_ami.eks-worker": {
+                    "type": "aws_ami",
+                    "depends_on": [],
+                    "primary": {
+                        "id": "ami-048486555686d18a0",
+                        "attributes": {
+                            "architecture": "x86_64",
+                            "block_device_mappings.#": "1",
+                            "block_device_mappings.3798922657.device_name": "/dev/xvda",
+                            "block_device_mappings.3798922657.ebs.%": "6",
+                            "block_device_mappings.3798922657.ebs.delete_on_termination": "true",
+                            "block_device_mappings.3798922657.ebs.encrypted": "false",
+                            "block_device_mappings.3798922657.ebs.iops": "0",
+                            "block_device_mappings.3798922657.ebs.snapshot_id": "snap-0277468d4a8a6a3d8",
+                            "block_device_mappings.3798922657.ebs.volume_size": "20",
+                            "block_device_mappings.3798922657.ebs.volume_type": "gp2",
+                            "block_device_mappings.3798922657.no_device": "",
+                            "block_device_mappings.3798922657.virtual_name": "",
+                            "creation_date": "2018-08-14T21:06:01.000Z",
+                            "description": "EKS Kubernetes Worker AMI with AmazonLinux2 image",
+                            "filter.#": "1",
+                            "filter.2070637487.name": "name",
+                            "filter.2070637487.values.#": "1",
+                            "filter.2070637487.values.0": "eks-worker-*",
+                            "hypervisor": "xen",
+                            "id": "ami-048486555686d18a0",
+                            "image_id": "ami-048486555686d18a0",
+                            "image_location": "602401143452/eks-worker-v22",
+                            "image_type": "machine",
+                            "most_recent": "true",
+                            "name": "eks-worker-v22",
+                            "owner_id": "602401143452",
+                            "owners.#": "1",
+                            "owners.0": "602401143452",
+                            "product_codes.#": "0",
+                            "public": "true",
+                            "root_device_name": "/dev/xvda",
+                            "root_device_type": "ebs",
+                            "root_snapshot_id": "snap-0277468d4a8a6a3d8",
+                            "sriov_net_support": "simple",
+                            "state": "available",
+                            "state_reason.%": "2",
+                            "state_reason.code": "UNSET",
+                            "state_reason.message": "UNSET",
+                            "tags.%": "0",
+                            "virtualization_type": "hvm"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "data.aws_availability_zones.available": {
+                    "type": "aws_availability_zones",
+                    "depends_on": [],
+                    "primary": {
+                        "id": "2019-02-15 04:21:25.051578827 +0000 UTC",
+                        "attributes": {
+                            "id": "2019-02-15 04:21:25.051578827 +0000 UTC",
+                            "names.#": "6",
+                            "names.0": "us-east-1a",
+                            "names.1": "us-east-1b",
+                            "names.2": "us-east-1c",
+                            "names.3": "us-east-1d",
+                            "names.4": "us-east-1e",
+                            "names.5": "us-east-1f",
+                            "zone_ids.#": "6",
+                            "zone_ids.0": "use1-az4",
+                            "zone_ids.1": "use1-az6",
+                            "zone_ids.2": "use1-az1",
+                            "zone_ids.3": "use1-az2",
+                            "zone_ids.4": "use1-az3",
+                            "zone_ids.5": "use1-az5"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "data.aws_region.current": {
+                    "type": "aws_region",
+                    "depends_on": [],
+                    "primary": {
+                        "id": "us-east-1",
+                        "attributes": {
+                            "current": "true",
+                            "description": "US East (N. Virginia)",
+                            "endpoint": "ec2.us-east-1.amazonaws.com",
+                            "id": "us-east-1",
+                            "name": "us-east-1"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "data.http.workstation-external-ip": {
+                    "type": "http",
+                    "depends_on": [],
+                    "primary": {
+                        "id": "2019-02-15 04:21:24.497151863 +0000 UTC",
+                        "attributes": {
+                            "body": "35.232.153.62\n",
+                            "id": "2019-02-15 04:21:24.497151863 +0000 UTC",
+                            "url": "http://ipv4.icanhazip.com"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.http"
+                }
+            },
+            "depends_on": []
+        }
+    ]
+}

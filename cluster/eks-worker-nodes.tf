@@ -61,7 +61,7 @@ resource "aws_security_group" "node" {
   tags = "${
     map(
      "Name", "terraform-eks-node",
-     "kubernetes.io/cluster/${var.cluster-name}", "owned",
+     "kubernetes.io/cluster/${var.cluster_name}", "owned",
     )
   }"
 }
@@ -111,7 +111,7 @@ mkdir -p $CA_CERTIFICATE_DIRECTORY
 echo "${aws_eks_cluster.eks.certificate_authority.0.data}" | base64 -d >  $CA_CERTIFICATE_FILE_PATH
 INTERNAL_IP=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)
 sed -i s,MASTER_ENDPOINT,${aws_eks_cluster.eks.endpoint},g /var/lib/kubelet/kubeconfig
-sed -i s,CLUSTER_NAME,${var.cluster-name},g /var/lib/kubelet/kubeconfig
+sed -i s,CLUSTER_NAME,${var.cluster_name},g /var/lib/kubelet/kubeconfig
 sed -i s,REGION,${data.aws_region.current.name},g /etc/systemd/system/kubelet.service
 sed -i s,MAX_PODS,20,g /etc/systemd/system/kubelet.service
 sed -i s,MASTER_ENDPOINT,${aws_eks_cluster.eks.endpoint},g /etc/systemd/system/kubelet.service
@@ -155,7 +155,7 @@ resource "aws_autoscaling_group" "node" {
   }
 
   tag {
-    key                 = "kubernetes.io/cluster/${var.cluster-name}"
+    key                 = "kubernetes.io/cluster/${var.cluster_name}"
     value               = "owned"
     propagate_at_launch = true
   }

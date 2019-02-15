@@ -12,7 +12,7 @@ resource "aws_vpc" "eks" {
   tags = "${
     map(
      "Name", "terraform-eks-node",
-     "kubernetes.io/cluster/${var.cluster-name}", "shared",
+     "kubernetes.io/cluster/${var.cluster_name}", "shared",
     )
   }"
 }
@@ -27,7 +27,7 @@ resource "aws_subnet" "eks" {
   tags = "${
     map(
      "Name", "terraform-eks-node",
-     "kubernetes.io/cluster/${var.cluster-name}", "shared",
+     "kubernetes.io/cluster/${var.cluster_name}", "shared",
     )
   }"
 }
