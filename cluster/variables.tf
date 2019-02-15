@@ -10,3 +10,8 @@ variable "cluster-name" {
 variable "num_nodes" {
     default = 4
 }
+
+variable "aws_region" {
+    default = "us-east-1"
+    type = "string"
+}
