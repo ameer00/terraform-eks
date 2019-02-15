@@ -27,7 +27,7 @@ TF_VAR_cluster_name=${TF_VAR_cluster_name:-'eks-1'}
 echo "${bold}Creating local ~/bin folder...${normal}"
 cd $HOME
 mkdir -p bin
-PATH=$PATH:$HOME/bin/
+export PATH=$PATH:$HOME/bin/:$HOME/.local/bin/
 
 # Install kubectx/kubens
 if kubectx &> /dev/null ; then
@@ -105,6 +105,15 @@ if ! cat $HOME/.bashrc | grep K-PROMPT &> /dev/null ; then
     cat $HOME/terraform-eks/cluster/krompt.txt >> $HOME/.bashrc
     source $HOME/.bashrc
 fi
+
+# Install aws CLI
+if ! aws &> /dev/null ; then
+    echo "${bold}Installing awscli...${normal}"
+    pip3 install awscli --upgrade --user
+fi
+echo "********************************************************************************"
+
+
 
 # Install EKS Cluster
 echo "${bold}Start terraform script...${normal}"
