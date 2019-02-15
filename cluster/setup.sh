@@ -100,8 +100,7 @@ fi
 echo "********************************************************************************"
 
 # Install krompt
-if cat $HOME/.bashrc | grep K-PROMPT &> /dev/null ; then
-else
+if ! cat $HOME/.bashrc | grep K-PROMPT &> /dev/null ; then
     cd $HOME
     cat $HOME/terraform-eks/cluster/krompt.txt >> $HOME/.bashrc
     source $HOME/.bashrc
