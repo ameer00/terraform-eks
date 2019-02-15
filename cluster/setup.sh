@@ -29,6 +29,16 @@ cd $HOME
 mkdir -p bin
 export PATH=$PATH:$HOME/bin/:$HOME/.local/bin/
 
+echo "${bold}Downloading Istio...${normal}"
+cd $HOME
+export ISTIO_VERSION=1.1.0-snapshot.6
+curl -L https://git.io/getLatestIstio | ISTIO_VERSION=$ISTIO_VERSION sh -
+cd istio-$ISTIO_VERSION
+export PATH=$PATH:$HOME/istio-$ISTIO_VERSION/bin
+cp $HOME/istio-$ISTIO_VERSION/bin/istioctl $HOME/bin/.
+cd $HOME
+echo "********************************************************************************"
+
 # Install kubectx/kubens
 if kubectx &> /dev/null ; then
     echo "${bold}kubectx/kubens already installed.${normal}"
@@ -135,8 +145,50 @@ terraform output config-map-aws-auth > config-map-aws-auth.yaml
 kubectl apply -f config-map-aws-auth.yaml
 echo "********************************************************************************"
 
-# Get nodes
+# Wait for Nodes
+echo "${bold}Waiting for Nodes to be Ready...${normal}"
+node_status=$(kubectl get nodes | grep Ready | awk 'BEGIN { ORS="" }; { print $2}')
+until [ $node_status = "ReadyReadyReadyReady" ]; do
+    node_status=$(kubectl get nodes | grep Ready | awk 'BEGIN { ORS="" }; { print $2}')
+    echo "Waiting for Nodes to be Ready..."
+    sleep 10
+done
+echo "${bold}Nodes are Ready.${normal}"
 
+# Install Istio
+echo "${bold}Installing Istio version $ISTIO_VERSION...${normal}"
+cd $HOME/istio-$ISTIO_VERSION
+
+echo "${bold}Creating tiller service account and init...${normal}"
+kubectl create -f install/kubernetes/helm/helm-service-account.yaml
+helm init --service-account tiller
+
+echo "${bold}Waiting for tiller...${normal}"
+until timeout 10 helm version; do sleep 10; done
+
+echo "${bold}Updating Helm dependencies for Istio version $ISTIO_VERSION...${normal}"
+helm repo add istio.io "https://gcsweb.istio.io/gcs/istio-prerelease/daily-build/release-1.1-latest-daily/charts/"
+helm dep update install/kubernetes/helm/istio
+
+echo "${bold}Installing istio-init chart to bootstrap Istio CRDs...${normal}"
+helm install install/kubernetes/helm/istio-init --name istio-init --namespace istio-system
+
+echo "${bold}Ensure all CRDs were committed...${normal}"
+CRDS=$(kubectl get crds | grep 'istio.io\|certmanager.k8s.io' | wc -l)
+until [ $CRDS = "56" ]; do
+    sleep 10
+    CRDS=$(kubectl get crds | grep 'istio.io\|certmanager.k8s.io' | wc -l)
+done
+
+echo "${bold}Install helm chart for Istio version $ISTIO_VERSION...${normal}"
+helm install $HOME/istio-$ISTIO_VERSION/install/kubernetes/helm/istio --name istio  \
+--namespace istio-system \
+--set tracing.enabled=true \
+--set global.mtls.enabled=true \
+--set grafana.enabled=true \
+--set servicegraph.enabled=true \
+--kube-context aws
+echo "********************************************************************************"
 
 
 
