@@ -1,11 +1,14 @@
 #!/bin/bash
 
+echo "${bold}Waiting for Nodes to be Ready...${normal}"
 node_status=$(kubectl get nodes | grep Ready | awk 'BEGIN { ORS="" }; { print $2}')
-until [ $node_status = "ReadyReadyReadyReady" ]; do
+until [ $node_status = "ReadyReadyReadyReady1" ]; do
     node_status=$(kubectl get nodes | grep Ready | awk 'BEGIN { ORS="" }; { print $2}')
     echo "Waiting for Nodes to be Ready..."
     sleep 10
 done
+echo "${bold}Nodes are Ready.${normal}"
+echo "********************************************************************************"
 
 echo Good to go
 

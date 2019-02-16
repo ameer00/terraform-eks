@@ -8,7 +8,7 @@
 #
 
 resource "aws_iam_role" "node" {
-  name = "terraform-eks-node"
+  name = "${var.cluster_name}-node-iamrole"
 
   assume_role_policy = <<POLICY
 {
@@ -42,7 +42,7 @@ resource "aws_iam_role_policy_attachment" "node-AmazonEC2ContainerRegistryReadOn
 }
 
 resource "aws_iam_instance_profile" "node" {
-  name = "terraform-eks"
+  name = "${var.cluster_name}-inst-profile-node"
   role = "${aws_iam_role.node.name}"
 }
 
