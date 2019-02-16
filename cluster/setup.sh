@@ -115,6 +115,7 @@ if ! cat $HOME/.bashrc | grep K-PROMPT &> /dev/null ; then
     cat $HOME/terraform-eks/cluster/krompt.txt >> $HOME/.bashrc
     source $HOME/.bashrc
 fi
+echo "********************************************************************************"
 
 # Install aws CLI
 if ! aws &> /dev/null ; then
@@ -185,7 +186,6 @@ echo "${bold}Install helm chart for Istio version $ISTIO_VERSION...${normal}"
 helm install $HOME/istio-$ISTIO_VERSION/install/kubernetes/helm/istio --name istio  \
 --namespace istio-system \
 --set tracing.enabled=true \
---set global.mtls.enabled=true \
 --set grafana.enabled=true \
 --set servicegraph.enabled=true \
 --kube-context aws

@@ -18,3 +18,16 @@ done
 echo $CRDS
 
 
+
+
+export USER=$(gcloud config list account --format "value(core.account)")
+export PROJECT_ID=$(gcloud config get-value project)
+kubectl create clusterrolebinding user-cluster-admin --clusterrole cluster-admin --user $USER
+gcloud projects add-iam-policy-binding $PROJECT_ID --member user:$USER \
+--role roles/owner \
+--role roles/clusterregistry.admin \
+--role roles/iam.serviceAccountAdmin \
+--role roles/iam.serviceAccountKeyAdmin \
+--role roles/resourcemanager.projectIamAdmin
+
+
