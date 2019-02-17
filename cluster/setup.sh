@@ -155,7 +155,12 @@ echo "**************************************************************************
 # Create kubeconfig
 echo "${bold}Creating kubeconfig...${normal}" 
 terraform output kubeconfig > kubeconfig.yaml 
-mkdir -p ~/.kube && cat kubeconfig.yaml > ~/.kube/config 
+if ls $HOME/.kube/config &> /dev/null ; then
+    KUBECONFIG=~/.kube/config:./kubeconfig.yaml kubectl config view --flatten > mergedkub && mv mergedkub ~/.kube/config
+    rm mergedkub
+else
+    mkdir -p ~/.kube && cat kubeconfig.yaml > ~/.kube/config 
+fi
 kubectx eks-1=aws 
 echo "********************************************************************************"
 
