@@ -74,7 +74,7 @@ fi
 echo "********************************************************************************"
 
 # Download the Service Account JSON key
-if [ -z $LOCAL_KEY_PATH ]; then
+if ! [ -z $LOCAL_KEY_PATH ]; then
     echo "${bold}Download the Service Account JSON key...${normal}"
     gcloud iam service-accounts keys create $LOCAL_KEY_PATH --iam-account=$GKE_CONNECT_SA@$PROJECT_ID.iam.gserviceaccount.com --project=$PROJECT_ID
 else
@@ -100,7 +100,7 @@ echo "**************************************************************************
 # Update the gke-connect-agent deployment image
 CURRENT_IMAGE=$(kubectl get deploy gke-connect-agent -n gke-connect-ameer-csp1-eks-1 -ojson | jq -r .spec.template.spec.containers[].image)
 if ! [ "$CURRENT_IMAGE" == "$DESIRED_IMAGE" ]; then
-    kubectl set image deployment/gke-connect-agent -n gke-connect-ameer-csp1-eks-1 gke-connect-agent=gcr.io/gkeconnect/gkeconnect-gce:gkeconnect_20190115_00_00
+    kubectl set image deployment/gke-connect-agent -n gke-connect-ameer-csp1-eks-1 gke-connect-agent=$DESIRED_IMAGE --context $EKS_CONTEXT
     echo "${bold}Now running the desired gke-connect agent image.${normal}"
 else
     echo "${bold}Already running the desired gke-connect agent image.${normal}"
